@@ -119,6 +119,7 @@
 
 <script type="text/javascript" src="{{ asset('js/multiple-modal.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/toaster.js') }}"></script>
 
 @livewireScripts
 <x-toaster-hub />
