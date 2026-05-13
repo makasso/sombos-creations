@@ -8,15 +8,13 @@ use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Masmerise\Toaster\Toaster;
 use Livewire\Component;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 
 class QuickView extends Component
 {
-    use LivewireAlert;
-
     public $product;
     public $quantity = 1;
     public $price = 0;
@@ -41,7 +39,7 @@ class QuickView extends Component
     public function addToCart()
     {
         if ($this->product->stock <= 0) {
-            $this->alert('error', 'This product is out of stock!');
+            Toaster::error('This product is out of stock!');
             return;
         }
 
@@ -53,7 +51,7 @@ class QuickView extends Component
         } else {
             $cart = Session::get('cart', []);
             if (isset($cart[$this->product->id])) {
-                $this->alert('warning', 'Product already in the cart!');
+                Toaster::warning('Product already in the cart!');
                 return;
             } else {
                 $cart[$this->product->id] = [
@@ -68,13 +66,13 @@ class QuickView extends Component
 
         $this->dispatch('cart:updated');
 
-        $this->alert('success', 'Product added to cart!');
+        Toaster::success('Product added to cart!');
     }
 
     public function addToWishlist()
     {
         if (!Auth::check()) {
-            $this->alert('error', 'Please log in to add to wishlist');
+            Toaster::error('Please log in to add to wishlist');
             return;
         }
 
@@ -85,7 +83,7 @@ class QuickView extends Component
 
         $this->dispatch('wishlist:updated', Wishlist::where('user_id', Auth::id())->count());
 
-        $this->alert('success', 'Product added to wishlist');
+        Toaster::success('Product added to wishlist');
     }
 
     public function increment(): void
@@ -93,7 +91,7 @@ class QuickView extends Component
         if ($this->quantity === $this->product->stock) {
             $this->quantity = $this->product->stock;
 
-            $this->alert('warning', 'Product stock limit reached!');
+            Toaster::warning('Product stock limit reached!');
         } else {
             $this->quantity++;
         }
@@ -140,7 +138,7 @@ class QuickView extends Component
     {
 
         if (! Auth::check()) {
-            $this->alert('error', 'Please login to pay directly with Paypal');
+            Toaster::error('Please login to pay directly with Paypal');
             return;
         }
         // Calculate the total amount (for simplicity, product price * quantity)
@@ -195,7 +193,7 @@ class QuickView extends Component
             $this->dispatch('redirectToPayPal', ['url' => $approvalUrl]);
         } else {
             // Dispatch an error event if something went wrong
-            $this->alert('error', 'Unable to process your request!');
+            Toaster::error('Unable to process your request!');
         }
 
         $this->isProcessing = true;

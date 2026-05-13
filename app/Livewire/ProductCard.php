@@ -8,12 +8,11 @@ use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Masmerise\Toaster\Toaster;
 
 
 class ProductCard extends Component
 {
-    use LivewireAlert;
 
     public $product;
 
@@ -25,7 +24,7 @@ class ProductCard extends Component
     public function addToCart()
     {
         if ($this->product->stock <= 0) {
-            $this->alert('error', 'This product is out of stock!');
+            Toaster::error('This product is out of stock!');
             return;
         }
 
@@ -37,7 +36,7 @@ class ProductCard extends Component
         } else {
             $cart = Session::get('cart', []);
             if (isset($cart[$this->product->id])) {
-                $this->alert('warning', 'Product already in the cart!');
+                Toaster::warning('Product already in the cart!');
                 return;
             }
 
@@ -51,7 +50,7 @@ class ProductCard extends Component
 
         $this->dispatch('cart:updated');
 
-        $this->alert('success', 'Product added to cart!');
+        Toaster::success('Product added to cart!');
 
         // Open the shopping cart modal
         $this->js("bootstrap.Modal.getOrCreateInstance(document.getElementById('shoppingCart')).show()");
@@ -60,7 +59,7 @@ class ProductCard extends Component
     public function addToWishlist()
     {
         if (!Auth::check()) {
-            $this->alert('error', 'Please log in to add to wishlist');
+            Toaster::error('Please log in to add to wishlist');
             return;
         }
 
@@ -71,7 +70,7 @@ class ProductCard extends Component
 
         $this->dispatch('wishlist:updated', Wishlist::where('user_id', Auth::id())->count());
 
-        $this->alert('success', 'Product added to wishlist');
+        Toaster::success('Product added to wishlist');
     }
 
     // Call this method on button click

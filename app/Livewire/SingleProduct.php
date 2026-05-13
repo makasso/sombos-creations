@@ -8,14 +8,12 @@ use App\Models\Review;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Masmerise\Toaster\Toaster;
 use Livewire\Component;
 
 class SingleProduct extends Component
 
 {
-    use LivewireAlert;
-
     public $product;
     public $quantity = 1;
     public $isProcessing = false;
@@ -42,7 +40,7 @@ class SingleProduct extends Component
         ]);
 
         if (!Auth::check()) {
-            $this->alert('error', 'Please log in to submit a review.');
+            Toaster::error('Please log in to submit a review.');
             return;
         }
 
@@ -52,7 +50,7 @@ class SingleProduct extends Component
             ->first();
 
         if ($existing) {
-            $this->alert('warning', 'You have already reviewed this product.');
+            Toaster::warning('You have already reviewed this product.');
             return;
         }
 
@@ -67,13 +65,13 @@ class SingleProduct extends Component
         $this->reviewComment = '';
         $this->product->refresh();
 
-        $this->alert('success', 'Review submitted successfully!');
+        Toaster::success('Review submitted successfully!');
     }
 
     public function addToCart()
     {
         if ($this->product->stock <= 0) {
-            $this->alert('error', 'This product is out of stock!');
+            Toaster::error('This product is out of stock!');
             return;
         }
 
@@ -85,7 +83,7 @@ class SingleProduct extends Component
         } else {
             $cart = Session::get('cart', []);
             if (isset($cart[$this->product->id])) {
-                $this->alert('warning', 'Product already in the cart!');
+                Toaster::warning('Product already in the cart!');
                 return;
             }
 
@@ -99,7 +97,7 @@ class SingleProduct extends Component
 
         $this->dispatch('cart:updated');
 
-        $this->alert('success', 'Product added to cart!');
+        Toaster::success('Product added to cart!');
 
         // Open the shopping cart modal
         $this->js("bootstrap.Modal.getOrCreateInstance(document.getElementById('shoppingCart')).show()");
@@ -108,7 +106,7 @@ class SingleProduct extends Component
     public function addToWishlist()
     {
         if (!Auth::check()) {
-            $this->alert('error', 'Please log in to add to wishlist');
+            Toaster::error('Please log in to add to wishlist');
             return;
         }
 
@@ -119,7 +117,7 @@ class SingleProduct extends Component
 
         $this->dispatch('wishlist:updated', Wishlist::where('user_id', Auth::id())->count());
 
-        $this->alert('success', 'Product added to wishlist');
+        Toaster::success('Product added to wishlist');
     }
 
     public function increment()
@@ -127,7 +125,7 @@ class SingleProduct extends Component
         if ($this->quantity === $this->product->stock) {
             $this->quantity = $this->product->stock;
 
-            $this->alert('warning', 'Product stock limit reached!');
+            Toaster::warning('Product stock limit reached!');
         } else {
             $this->quantity++;
         }
@@ -169,7 +167,7 @@ class SingleProduct extends Component
     public function buyNow()
     {
         if ($this->product->stock <= 0) {
-            $this->alert('error', 'This product is out of stock!');
+            Toaster::error('This product is out of stock!');
             return;
         }
 

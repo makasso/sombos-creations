@@ -6,13 +6,11 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Masmerise\Toaster\Toaster;
 use Livewire\Component;
 
 class CartRow extends Component
 {
-    use LivewireAlert;
-
     public $item;
     public $quantity = 1;
 
@@ -26,7 +24,7 @@ class CartRow extends Component
     {
         if ($this->quantity >= $this->item->product->stock) {
             $this->quantity = $this->item->product->stock;
-            $this->alert('warning', 'Product stock limit reached!');
+            Toaster::warning('Product stock limit reached!');
             return;
         }
 
@@ -54,7 +52,7 @@ class CartRow extends Component
             Session::put('cart', $cart);
         }
 
-        $this->alert('success', 'Item has been deleted!');
+        Toaster::success('Item has been deleted!');
         $this->dispatch('cart:updated');
     }
 

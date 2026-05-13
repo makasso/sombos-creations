@@ -5,12 +5,10 @@ namespace App\Livewire\Modals;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
 class ShoppingCart extends Component
 {
-    use LivewireAlert;
 
     public $items = [];
     public $subTotal = 0;

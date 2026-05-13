@@ -47,73 +47,6 @@
 
 
 
-    <style>
-        /* SweetAlert2 Toast Styles */
-        .swal2-container.swal2-top-end {
-            z-index: 99999 !important;
-        }
-        .swal2-toast {
-            font-family: 'Playfair Display', sans-serif !important;
-            font-size: 0.95rem !important;
-            padding: 0.75rem 1rem !important;
-            width: auto !important;
-            min-width: 300px !important;
-            max-width: 400px !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-            border-radius: 8px !important;
-            background: #fff !important;
-        }
-        .swal2-toast .swal2-title {
-            font-size: 0.95rem !important;
-            font-weight: 600 !important;
-            color: #333 !important;
-            margin: 0 0.5rem !important;
-        }
-        .swal2-toast .swal2-icon {
-            width: 28px !important;
-            height: 28px !important;
-            margin: 0 !important;
-            border-width: 2px !important;
-        }
-        .swal2-toast .swal2-icon .swal2-icon-content {
-            font-size: 18px !important;
-        }
-        .swal2-toast .swal2-icon.swal2-success {
-            border-color: #28a745 !important;
-            color: #28a745 !important;
-        }
-        .swal2-toast .swal2-icon.swal2-success [class^='swal2-success-line'] {
-            background-color: #28a745 !important;
-        }
-        .swal2-toast .swal2-icon.swal2-success .swal2-success-ring {
-            border-color: rgba(40, 167, 69, 0.3) !important;
-        }
-        .swal2-toast .swal2-icon.swal2-error {
-            border-color: #dc3545 !important;
-            color: #dc3545 !important;
-        }
-        .swal2-toast .swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
-            background-color: #dc3545 !important;
-        }
-        .swal2-toast .swal2-icon.swal2-warning {
-            border-color: #f59e0b !important;
-            color: #f59e0b !important;
-        }
-        .swal2-toast .swal2-icon.swal2-info {
-            border-color: #3b82f6 !important;
-            color: #3b82f6 !important;
-        }
-        .swal2-toast .swal2-timer-progress-bar {
-            background: rgba(0, 0, 0, 0.2) !important;
-        }
-        .swal2-toast .swal2-close {
-            font-size: 1.2rem !important;
-            color: #999 !important;
-        }
-        .swal2-toast .swal2-close:hover {
-            color: #333 !important;
-        }
-    </style>
     @stack('styles')
 
 
@@ -186,10 +119,8 @@
 
 <script type="text/javascript" src="{{ asset('js/multiple-modal.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-@include('sweetalert::alert')
-<x-livewire-alert::scripts />
+<x-toaster-hub />
 
 @livewireScripts
 
