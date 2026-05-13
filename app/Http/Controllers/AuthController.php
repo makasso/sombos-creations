@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Masmerise\Toaster\Toaster;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -33,7 +34,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        toast('Registration Successful!');
+        Toaster::success('Registration Successful!');
 
 
         return redirect()->route('home');
@@ -49,7 +50,7 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
-            toast('Login Successful!');
+            Toaster::success('Login Successful!');
 
             if (Auth::user()->role === 'admin') {
                 return redirect('/admin');
@@ -59,7 +60,7 @@ class AuthController extends Controller
 
         }
 
-        toast('Invalid Credentials!', 'error');
+        Toaster::error('Invalid Credentials!');
 
         return back();
     }
@@ -71,7 +72,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        toast('Logout Successful!');
+        Toaster::success('Logout Successful!');
 
         return redirect()->route('home');
     }

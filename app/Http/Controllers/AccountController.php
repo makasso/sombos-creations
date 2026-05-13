@@ -7,6 +7,7 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Masmerise\Toaster\Toaster;
 
 class AccountController extends Controller
 {
@@ -60,7 +61,7 @@ class AccountController extends Controller
 
         $user->update($data);
 
-        toast('Account details updated successfully');
+        Toaster::success('Account details updated successfully');
         return redirect()->back();
     }
 

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Masmerise\Toaster\Toaster;
 
 class CheckoutController extends Controller
 {
@@ -56,7 +57,7 @@ class CheckoutController extends Controller
         $items = $this->getCartItems();
 
         if ($items->isEmpty()) {
-            toast('Your cart is empty.', 'error');
+            Toaster::error('Your cart is empty.');
             return redirect()->route('shop');
         }
 
@@ -114,7 +115,7 @@ class CheckoutController extends Controller
         $items = $this->getCartItems();
 
         if ($items->isEmpty()) {
-            toast('Your cart is empty.', 'error');
+            Toaster::error('Your cart is empty.');
             return redirect()->route('shop');
         }
 
@@ -201,7 +202,7 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Checkout error', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            toast('Something went wrong: ' . $e->getMessage(), 'error');
+            Toaster::error('Something went wrong: ' . $e->getMessage());
             return redirect()->back();
         }
     }
@@ -250,7 +251,7 @@ class CheckoutController extends Controller
             ->first();
 
         if (!$order) {
-            toast('Order not found. Please check your email and order number.', 'error');
+            Toaster::error('Order not found. Please check your email and order number.');
             return redirect()->back();
         }
 

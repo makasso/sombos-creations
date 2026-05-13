@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Masmerise\Toaster\Toaster;
 
 class PaymentController extends Controller
 {
@@ -43,7 +44,7 @@ class PaymentController extends Controller
 
             $this->paymentService->finalizePayment($order, $response['id'], 'paypal');
 
-            toast('Payment successful! Thank you for your order.', 'success');
+            Toaster::success('Payment successful! Thank you for your order.');
 
             if (Auth::check()) {
                 return redirect()->route('my-account.orders.details', $order->id);
@@ -53,7 +54,7 @@ class PaymentController extends Controller
 
         } catch (\Exception $e) {
             Log::error('PayPal success callback error', ['error' => $e->getMessage()]);
-            toast('Payment verification failed: ' . $e->getMessage(), 'error');
+            Toaster::error('Payment verification failed: ' . $e->getMessage());
             return redirect()->route('home');
         }
     }
@@ -63,7 +64,7 @@ class PaymentController extends Controller
      */
     public function cancel(Request $request)
     {
-        toast('Payment was cancelled.', 'error');
+        Toaster::error('Payment was cancelled.');
         return redirect()->route('checkout');
     }
 
@@ -92,7 +93,7 @@ class PaymentController extends Controller
             $items = $this->getCartItems();
 
             if ($items->isEmpty()) {
-                toast('Your cart is empty.', 'error');
+                Toaster::error('Your cart is empty.');
                 return redirect()->route('shop');
             }
 
@@ -131,7 +132,7 @@ class PaymentController extends Controller
             $transactionId = $this->paymentService->payWithStripe($order, $request->stripeToken);
             $this->paymentService->finalizePayment($order, $transactionId, 'stripe');
 
-            toast('Payment successful!', 'success');
+            Toaster::success('Payment successful!');
 
             if (Auth::check()) {
                 return redirect()->route('my-account.orders.details', $order->id);
@@ -142,7 +143,7 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Stripe payment error', ['error' => $e->getMessage()]);
-            toast('Payment failed: ' . $e->getMessage(), 'error');
+            Toaster::error('Payment failed: ' . $e->getMessage());
             return back();
         }
     }
