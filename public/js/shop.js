@@ -302,7 +302,14 @@
         let paginationList = $("#listLayout .wg-pagination").clone();
         let paginationGrid = $("#gridLayout .wg-pagination").clone();
 
-        $(".select-item").on("click", function () {
+        $(".select-item").on("click", function (e) {
+            // If the item has a real href, let the browser navigate (server-side sort)
+            var href = $(this).attr("href");
+            if (href && href !== "#" && href !== "javascript:void(0)") {
+                return true; // allow default navigation
+            }
+
+            e.preventDefault();
             const sortValue = $(this).data("sort-value");
             $(".select-item").removeClass("active");
             $(this).addClass("active");
