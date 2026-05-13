@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /storage/
+Disallow: /vendor/
+Allow: /
+
+Sitemap: https://somboscreations.com/sitemap.xml

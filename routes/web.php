@@ -71,4 +71,12 @@ Route::middleware('auth-customer')->group(function() {
 
 // Admin panel is now handled by Filament at /admin
 
+// Sitemap
+Route::get('/sitemap.xml', function () {
+    $products = \App\Models\Product::select('slug', 'updated_at')->get();
+    $categories = \App\Models\Category::select('slug', 'updated_at')->get();
+    $collections = \App\Models\Collection::select('id', 'updated_at')->get();
 
+    return response()->view('sitemap', compact('products', 'categories', 'collections'))
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');

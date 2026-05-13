@@ -1,12 +1,34 @@
 <!DOCTYPE html>
-<html  lang="en-US">
+<html lang="en-US">
 
 <head>
     <meta charset="utf-8">
-    <title>Sombos Creations - @yield('title') </title>
+    <title>Sombos Creations - @yield('title', 'African Fashion & Accessories')</title>
 
-    <meta name="author" content="https:/maatonggroup.com/usa">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="@yield('meta_description', 'Sombos Creations — Discover authentic African fashion: dresses, jewelry, accessories, hats and more. Express your soul through African style.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'african fashion, african dresses, african jewelry, african accessories, african hats, sombos creations, african clothing, african style')">
+    <meta name="author" content="Sombos Creations">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('og_title', 'Sombos Creations — Step Into African Fashion')">
+    <meta property="og:description" content="@yield('og_description', 'Discover authentic African fashion: dresses, jewelry, accessories, hats and more. Express your soul through African style.')">
+    <meta property="og:image" content="@yield('og_image', asset('images/slider/fashion-slideshow-01.png'))">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Sombos Creations">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', 'Sombos Creations — Step Into African Fashion')">
+    <meta name="twitter:description" content="@yield('og_description', 'Discover authentic African fashion: dresses, jewelry, accessories, hats and more. Express your soul through African style.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/slider/fashion-slideshow-01.png'))">
 
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

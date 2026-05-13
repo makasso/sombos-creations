@@ -1,5 +1,12 @@
 @extends('layouts.main')
-@section('title', 'Product: ' . $product->name)
+@section('title', $product->name . ' — Sombos Creations')
+
+@section('meta_description', Str::limit(strip_tags($product->description), 160))
+@section('meta_keywords', $product->name . ', african fashion, ' . ($product->category->name ?? 'accessories') . ', sombos creations')
+@section('og_type', 'product')
+@section('og_title', $product->name . ' — Sombos Creations')
+@section('og_description', Str::limit(strip_tags($product->description), 200))
+@section('og_image', $product->images->first() ? asset('storage/' . $product->images->first()->image_path) : asset('images/slider/fashion-slideshow-01.png'))
 
 @section('content')
     <section class="flat-spacing-4 pt_0">

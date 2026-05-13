@@ -1,7 +1,8 @@
 @extends('layouts.main')
-@section('title')
-    About Us
-@endsection
+@section('title', 'About Us')
+@section('meta_description', 'Learn about Sombos Creations — our mission to bring authentic African fashion to the world. Dresses, jewelry, accessories crafted with passion.')
+@section('og_title', 'About Us — Sombos Creations')
+@section('og_description', 'Our mission is to bring authentic African fashion to the world. Dresses, jewelry, accessories crafted with passion.')
 
 @section('content')
     <section class="tf-slideshow about-us-page position-relative">

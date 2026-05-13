@@ -1,5 +1,8 @@
 @extends('layouts.main')
-@section('title') Shop @endsection
+@section('title', 'Shop African Fashion')
+@section('meta_description', 'Browse our collection of authentic African dresses, jewelry, accessories, hats and more. Free shipping on select items.')
+@section('og_title', 'Shop — Sombos Creations')
+@section('og_description', 'Browse our collection of authentic African dresses, jewelry, accessories, hats and more.')
 
 @section('content')
     <div class="tf-page-title">

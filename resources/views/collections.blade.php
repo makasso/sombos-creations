@@ -1,5 +1,8 @@
 @extends('layouts.main')
 @section('title', 'Collections')
+@section('meta_description', 'Explore our curated African fashion collections — unique styles for every occasion.')
+@section('og_title', 'Collections — Sombos Creations')
+
 @section('content')
     <div class="tf-page-title">
         <div class="container-full">
