@@ -8,7 +8,7 @@
   <em>A modern African fashion e-commerce platform built with Laravel 11, Livewire 3, and Filament 3.</em>
 </p>
 
-![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=flat-square&logo=php&logoColor=white)
 ![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=flat-square&logo=laravel&logoColor=white)
 ![Livewire](https://img.shields.io/badge/Livewire-3-FB70A9?style=flat-square&logo=livewire&logoColor=white)
 ![Filament](https://img.shields.io/badge/Filament-3-FDAE4B?style=flat-square&logo=laravel&logoColor=white)
