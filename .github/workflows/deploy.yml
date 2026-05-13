@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-  # ─── BUILD & TEST ─────────────────────────────────────────────
-  build:
-    name: 🧪 Build & Test
+  build-and-deploy:
+    name: 🏗️ Build & Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -37,32 +36,28 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: |
-            vendor/
-            public/build/
-          retention-days: 1
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOSTINGER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.HOSTINGER_PORT }} ${{ secrets.HOSTINGER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
 
-  # ─── DEPLOY ───────────────────────────────────────────────────
-  deploy:
-    name: 📦 Deploy to Hostinger
-    runs-on: ubuntu-latest
-    needs: build
+      - name: Deploy files via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            --exclude='storage/logs/*' \
+            --exclude='storage/framework/sessions/*' \
+            --exclude='storage/framework/cache/data/*' \
+            --exclude='storage/app/public/*' \
+            -e "ssh -p ${{ secrets.HOSTINGER_PORT }} -o StrictHostKeyChecking=no" \
+            ./ ${{ secrets.HOSTINGER_USERNAME }}@${{ secrets.HOSTINGER_HOST }}:~/domains/${{ secrets.HOSTINGER_DOMAIN }}/public_html/
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: .
-
-      - name: Deploy via SSH
+      - name: Run post-deploy commands
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.HOSTINGER_HOST }}
@@ -71,30 +66,13 @@ jobs:
           port: ${{ secrets.HOSTINGER_PORT }}
           script: |
             cd ~/domains/${{ secrets.HOSTINGER_DOMAIN }}/public_html
-            echo "🔄 Activating maintenance mode..."
-            php artisan down --secret="deploy-bypass-token" || true
-            echo "📥 Pulling latest changes..."
-            git pull origin main
-            echo "📦 Installing Composer dependencies..."
-            composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
             echo "🔧 Running migrations..."
-            php artisan migrate --force
+            php artisan migrate --force || true
             echo "🗑️ Clearing caches..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            php artisan event:cache
             echo "🔗 Storage link..."
             php artisan storage:link || true
-            echo "✅ Disabling maintenance mode..."
-            php artisan up
             echo "🎉 Deployment complete!"
-
-      - name: Deployment status
-        if: success()
-        run: echo "✅ Deployment to Hostinger completed successfully!"
-
-      - name: Deployment failure
-        if: failure()
-        run: echo "❌ Deployment failed. Check the logs above."
 
