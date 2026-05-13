@@ -66,13 +66,20 @@ jobs:
           port: ${{ secrets.HOSTINGER_PORT }}
           script: |
             cd ~/domains/${{ secrets.HOSTINGER_DOMAIN }}/public_html
+            echo "🔧 Creating .env if missing..."
+            if [ ! -f .env ]; then
+              cp .env.example .env
+              php artisan key:generate --force
+              echo "⚠️ .env created from .env.example — please configure production values!"
+            fi
             echo "🔧 Running migrations..."
             php artisan migrate --force || true
             echo "🗑️ Clearing caches..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            echo "🔗 Storage link..."
-            php artisan storage:link || true
+            echo "🔗 Setting up storage access..."
+            rm -rf public/storage
+            cp -r storage/app/public/* public/storage/ 2>/dev/null || mkdir -p public/storage
             echo "🎉 Deployment complete!"
 
