@@ -13,10 +13,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
+    protected PaymentService $paymentService;
+
+    public function __construct(PaymentService $paymentService)
+    {
+        $this->paymentService = $paymentService;
+    }
+
     /**
      * Load cart items (works for both authenticated users and guests).
      */
@@ -182,10 +190,8 @@ class CheckoutController extends Controller
             // Store order ID in session so guests can track after payment
             Session::put('guest_order_id', $order->id);
 
-            $paymentService = new PaymentService();
-
             if ($request->payment_method == 'paypal') {
-                $paymentUrl = $paymentService->payWithPayPal($order);
+                $paymentUrl = $this->paymentService->payWithPayPal($order);
                 return redirect()->away($paymentUrl);
             }
 
@@ -194,6 +200,7 @@ class CheckoutController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Checkout error', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             toast('Something went wrong: ' . $e->getMessage(), 'error');
             return redirect()->back();
         }
