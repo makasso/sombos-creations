@@ -55,27 +55,27 @@
                             <span class="icon icon-arrow-down"></span>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => null]) }}" class="select-item {{ !request('sort') ? 'active' : '' }}">
+                            <div class="select-item sort-link {{ !request('sort') ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => null]) }}">
                                 <span class="text-value-item">Featured</span>
-                            </a>
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'best-selling']) }}" class="select-item {{ request('sort') === 'best-selling' ? 'active' : '' }}">
+                            </div>
+                            <div class="select-item sort-link {{ request('sort') === 'best-selling' ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => 'best-selling']) }}">
                                 <span class="text-value-item">Best selling</span>
-                            </a>
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'a-z']) }}" class="select-item {{ request('sort') === 'a-z' ? 'active' : '' }}">
+                            </div>
+                            <div class="select-item sort-link {{ request('sort') === 'a-z' ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => 'a-z']) }}">
                                 <span class="text-value-item">Alphabetically, A-Z</span>
-                            </a>
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'z-a']) }}" class="select-item {{ request('sort') === 'z-a' ? 'active' : '' }}">
+                            </div>
+                            <div class="select-item sort-link {{ request('sort') === 'z-a' ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => 'z-a']) }}">
                                 <span class="text-value-item">Alphabetically, Z-A</span>
-                            </a>
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'price-low-high']) }}" class="select-item {{ request('sort') === 'price-low-high' ? 'active' : '' }}">
+                            </div>
+                            <div class="select-item sort-link {{ request('sort') === 'price-low-high' ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => 'price-low-high']) }}">
                                 <span class="text-value-item">Price, low to high</span>
-                            </a>
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'price-high-low']) }}" class="select-item {{ request('sort') === 'price-high-low' ? 'active' : '' }}">
+                            </div>
+                            <div class="select-item sort-link {{ request('sort') === 'price-high-low' ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => 'price-high-low']) }}">
                                 <span class="text-value-item">Price, high to low</span>
-                            </a>
-                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'date-old-new']) }}" class="select-item {{ request('sort') === 'date-old-new' ? 'active' : '' }}">
+                            </div>
+                            <div class="select-item sort-link {{ request('sort') === 'date-old-new' ? 'active' : '' }}" data-url="{{ request()->fullUrlWithQuery(['sort' => 'date-old-new']) }}">
                                 <span class="text-value-item">Date, old to new</span>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,4 +102,13 @@
 @push('scripts')
     <script type="text/javascript" src="{{ asset('js/nouislider.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/shop.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.sort-link', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = $(this).data('url');
+            });
+        });
+    </script>
 @endpush
