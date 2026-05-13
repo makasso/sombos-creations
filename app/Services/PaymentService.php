@@ -22,13 +22,28 @@ class PaymentService
      */
     public function payWithPayPal(Order $order): string
     {
+        $config = config('paypal');
+        $mode = $config['mode'] ?? 'sandbox';
+
+        Log::info('PayPal: Initiating payment', [
+            'order_id' => $order->id,
+            'amount' => $order->total_amount,
+            'mode' => $mode,
+            'has_client_id' => !empty($config[$mode]['client_id']),
+            'has_client_secret' => !empty($config[$mode]['client_secret']),
+        ]);
+
         $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
+        $provider->setApiCredentials($config);
 
         $token = $provider->getAccessToken();
 
         if (!$token || isset($token['error'])) {
-            Log::error('PayPal: Failed to get access token', ['response' => $token]);
+            Log::error('PayPal: Failed to get access token', [
+                'response' => $token,
+                'mode' => $mode,
+                'client_id_prefix' => substr($config[$mode]['client_id'] ?? '', 0, 10) . '...',
+            ]);
             throw new \Exception('Unable to connect to PayPal. Please try again later.');
         }
 
