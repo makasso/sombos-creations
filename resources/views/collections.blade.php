@@ -26,7 +26,7 @@
                     </div>
                 @endforeach
             </div>
-            {{ $collections->links() }}
+            {{ $collections->links('vendor.pagination.theme') }}
         </div>
     </section>
 @endsection

@@ -12,5 +12,5 @@
             @endforeach
 
     </div>
-    {{ $wishlists->links() }}
+    {{ $wishlists->links('vendor.pagination.theme') }}
 @endsection
