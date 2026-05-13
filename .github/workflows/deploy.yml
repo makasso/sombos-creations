@@ -78,8 +78,7 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            echo "🔗 Setting up storage access..."
-            rm -rf public/storage
-            cp -r storage/app/public/* public/storage/ 2>/dev/null || mkdir -p public/storage
+            echo "🔗 Storage link..."
+            php artisan storage:link || true
             echo "🎉 Deployment complete!"
 
