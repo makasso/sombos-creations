@@ -92,10 +92,8 @@
                         <!-- card product 1 -->
                         <livewire:product-card :product="$product" wire:key="{{ $product->id }}"></livewire:product-card>
                     @endforeach
-{{--            Paginations        --}}
-                    {{ $products->links('vendor.pagination.theme') }}
-
                 </div>
+                {{ $products->links('vendor.pagination.theme') }}
             </div>
         </div>
     </section>

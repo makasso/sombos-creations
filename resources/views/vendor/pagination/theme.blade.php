@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
     <div class="tf-pagination-wrap">
-        <ul class="tf-pagination-list">
+        <ul class="tf-pagination-list" style="flex-wrap:nowrap; list-style:none; padding:0; margin:0;">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="disabled">
