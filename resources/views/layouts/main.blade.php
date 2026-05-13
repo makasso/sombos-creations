@@ -47,8 +47,8 @@
 
 
 
+    @livewireStyles
     @stack('styles')
-
 
 
 </head>
@@ -120,9 +120,8 @@
 <script type="text/javascript" src="{{ asset('js/multiple-modal.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 
-<x-toaster-hub />
-
 @livewireScripts
+<x-toaster-hub />
 
 
 <script>
