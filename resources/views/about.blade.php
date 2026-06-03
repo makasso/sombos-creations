@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="about-block-image">
-                    <img src="{{ asset('images/collections/collection-30.jpg') }}" alt="African fashion collection">
+                    <img src="{{ asset('images/about-2.png') }}" alt="African fashion collection">
                 </div>
             </div>
         </div>
