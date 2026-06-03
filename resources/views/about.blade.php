@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="about-block-image">
+                <div class="about-block-image about-block-image--centered">
                     <img src="{{ asset('images/about-2.png') }}" alt="African fashion collection">
                 </div>
             </div>
@@ -260,6 +260,9 @@
         }
         .about-block-image:hover img {
             transform: scale(1.03);
+        }
+        .about-block-image--centered img {
+            object-position: center center;
         }
         .about-image-tag {
             position: absolute;
