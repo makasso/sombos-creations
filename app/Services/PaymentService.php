@@ -16,13 +16,47 @@ use Stripe\Stripe;
 class PaymentService
 {
     /**
+     * Build the PayPal configuration array with sanitized credentials.
+     *
+     * Shared hosting .env files frequently introduce invisible characters
+     * (trailing spaces, CR/LF, BOM, surrounding quotes) into credential
+     * values, which makes PayPal return "invalid_client". We trim those out
+     * defensively so authentication only fails when credentials are truly wrong.
+     */
+    private function paypalConfig(): array
+    {
+        $config = config('paypal');
+
+        $clean = static function (?string $value): string {
+            // Remove surrounding whitespace, CR/LF, BOM and accidental quotes.
+            $value = (string) $value;
+            $value = preg_replace('/^\x{FEFF}/u', '', $value); // strip BOM
+            $value = trim($value);
+            $value = trim($value, "\"'"); // strip stray quotes
+
+            return trim($value);
+        };
+
+        foreach (['sandbox', 'live'] as $mode) {
+            if (isset($config[$mode]['client_id'])) {
+                $config[$mode]['client_id'] = $clean($config[$mode]['client_id']);
+            }
+            if (isset($config[$mode]['client_secret'])) {
+                $config[$mode]['client_secret'] = $clean($config[$mode]['client_secret']);
+            }
+        }
+
+        return $config;
+    }
+
+    /**
      * Create PayPal order and return the approval URL.
      *
      * @throws \Exception
      */
     public function payWithPayPal(Order $order): string
     {
-        $config = config('paypal');
+        $config = $this->paypalConfig();
         $mode = $config['mode'] ?? 'sandbox';
 
         Log::info('PayPal: Initiating payment', [
@@ -31,6 +65,8 @@ class PaymentService
             'mode' => $mode,
             'has_client_id' => !empty($config[$mode]['client_id']),
             'has_client_secret' => !empty($config[$mode]['client_secret']),
+            'client_id_length' => strlen($config[$mode]['client_id'] ?? ''),
+            'client_secret_length' => strlen($config[$mode]['client_secret'] ?? ''),
         ]);
 
         $provider = new PayPalClient;
@@ -100,7 +136,7 @@ class PaymentService
     public function capturePayPal(string $token): array
     {
         $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
+        $provider->setApiCredentials($this->paypalConfig());
         $provider->getAccessToken();
 
         $response = $provider->capturePaymentOrder($token);

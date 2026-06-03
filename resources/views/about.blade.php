@@ -7,7 +7,8 @@
 @section('content')
     <section class="tf-slideshow about-us-page position-relative">
         <div class="banner-wrapper">
-            <img class=" ls-is-cached lazyloaded" src="images/slider/about-banner-01.jpg" data-src="images/slider/about-banner-01.jpg" alt="image-collection">
+            <img class=" ls-is-cached lazyloaded" src="images/slider/about-banner.png" data-src="images/slider/about-banner.png" alt="image-collection">
+            <div class="banner-overlay" aria-hidden="true"></div>
             <div class="box-content text-center">
                 <div class="container">
                     <div class="text text-white">Achieve Your Fitness Goals,  <br class="d-xl-block d-none"> Embrace African Elegance!</div>
@@ -178,6 +179,20 @@
 
 @push('styles')
     <style>
+        .about-us-page .banner-wrapper {
+            position: relative;
+        }
+        .about-us-page .banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.48);
+            z-index: 1;
+        }
+        .about-us-page .box-content {
+            position: relative;
+            z-index: 2;
+        }
+
         /* === About Story Section === */
         .about-story {
             padding: 80px 0 60px;
