@@ -18,7 +18,7 @@
     </section>
 
     <!-- About Story Section -->
-    <section class="about-story">
+        <section class="about-story">
         <div class="container">
             <!-- Intro -->
             <div class="about-intro text-center">
@@ -251,9 +251,9 @@
         }
         .about-block-image img {
             width: 100%;
-            height: 504px;
+            height: 555px;
             object-fit: cover;
-            object-position: top center;
+            object-position: center center;
             display: block;
             border-radius: 12px;
             transition: transform 0.5s ease;
